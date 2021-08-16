@@ -1,0 +1,83 @@
+{% extends "base2.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block page %}
+
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <div class="row">
+
+
+                <div class="col-xl-6 col-md-6">
+                    <div class="card mini-stat bg-primary">
+                        <div class="card-body mini-stat-img">
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3 font-size-20">Update Area</h6>
+
+                                <form class="" action="" method="POST" >
+
+                                    {% csrf_token %}
+
+                                    <div class="form-group">
+                                        <label class="text-black col-form-label">Polygon Name</label>
+                                        <div class="">
+                                            
+                                            {{form.polygon_name}}
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="text-black col-form-label">Polygon Coordinates</label>
+                                        <div class="">
+                                            
+                                            {{form.polygon_area}}
+                                            
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-warning waves-effect waves-light mr-1">
+                                        Update
+                                    </button>
+
+                                    {% if form.errors %}
+                                        {% for field in form %}
+                                            {% for error in field.errors %}
+                                                <div class="alert alert-danger">
+                                                    <strong>{{ field.label }} : </strong><span>{{ error|escape }}</strong>
+                                                </div>
+                                            {% endfor %}
+                                        {% endfor %}
+                                        {% for error in form.non_field_errors %}
+                                            <div class="alert alert-danger">
+                                                <strong>{{ error|escape }}</strong>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+
+
+                                </form>
+
+                                
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                
+            </div>
+            <!-- end row -->
+
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

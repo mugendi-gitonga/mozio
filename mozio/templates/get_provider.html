@@ -1,0 +1,168 @@
+
+{% extends "base2.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block page %}
+
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="page-title-box">
+                        
+
+                        <h4>Dashboard</h4>
+                        <!-- <h5>My link: <small id="my_link" class="text-info">https://digiland.com/{{ref_code}}</small><button id="link_btn" class="btn btn-sm btn-outline-dark ml-1">Copy</button></h5> -->
+                        <!-- <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Lexa</a></li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol> -->
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+
+                <div class="col-xl-6 col-md-6">
+                    <div class="card mini-stat bg-primary">
+                        <div class="card-body mini-stat-img">
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3 font-size-16">Get Provider</h6>
+
+                                <form id="provider-form-wrapper">
+
+                                    
+
+                                    {{form.as_p}}
+    
+                                    <button type="submit" class="btn btn-warning waves-effect waves-light mr-1">
+                                        Submit
+                                    </button>
+
+
+                                </form>
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-md-6">
+                    <div class="card mini-stat bg-primary">
+                        <div class="card-body mini-stat-img">
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3 font-size-16">Nearest Providers</h6>
+
+                                <div id="nearest-providers-wrapper">
+
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+            <!-- end row -->
+
+
+            
+        </div>
+        <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+
+
+</div>
+<!-- main content end -->
+
+<script>
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+
+    // providersList()
+
+    // function providersList(){
+    //     var wrapper = document.getElementById('nearest-providers-wrapper')
+    //     wrapper.innerHTML = ''
+
+    //     console.log('Data:', data)
+
+    //     var provider_list = data
+    //     for (var i in provider_list){
+            
+    //         var item = `
+
+    //         <div id="data-row-${i}" class="mt-3">
+    //             <h7>
+    //                 <a class="text-info font-size-16 mr-3">${provider_list[i].polygon_name}</a> -->
+    //                 <span>${provider_list[i].price}</span>,
+    //                 <span>${provider_list[i].polygon_area}</span>,
+    //             </h7>
+                
+    //         </div>
+
+    //         `
+    //         wrapper.innerHTML += item
+    //     }
+    // }
+
+
+    var provider_form = document.getElementById('provider-form-wrapper')
+    provider_form.addEventListener('submit', function(e){
+        e.preventDefault()
+        console.log('Form Submitted')
+
+        
+        var lat = document.getElementById('id_lattitude').value
+        var lon = document.getElementById('id_longitude').value
+        console.log(lat,lon)
+
+        var url = `http://localhost:8000/api/v1/nearest_providers/${lat}/${lon}/`
+
+        fetch(url, {
+            method:'POST',
+            headers:{
+                'Content-type':'application/json', 
+                'X-CSRFToken':csrftoken,
+            },
+            body:JSON.stringify({
+                'lattitude':lat,
+                'longitude':lon,
+            })
+            })
+            .then(function(response){
+                providersList()
+                document.getElementById('provider-form-wrapper').reset()
+        })
+    })
+
+</script>
+
+
+{% endblock %}

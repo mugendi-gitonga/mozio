@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<!DOCTYPE html>
+<div id="layout-wrapper">
+
+    {% if messages %}
+        <script>
+            {% for message in messages %}
+                alert("{{ message }}");
+            {% endfor %}
+        </script>
+    {% endif %}
+
+
+
+    <div class="vertical-menu">
+
+        <div data-simplebar class="h-100">
+
+            <!--- Sidemenu -->
+            <div id="sidebar-menu">
+                <!-- Left Menu Start -->
+                <ul class="metismenu list-unstyled" id="side-menu">
+                    <li class="menu-title">Main</li>
+
+                    <li>
+                        <a href="{% url 'dashboard-view' %}" class="waves-effect">
+                            <i class="mdi mdi-view-dashboard"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#" class=" waves-effect">
+                            <i class="mdi mdi-view-dashboard"></i>
+                            <span>Providers</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            {% for provider in providers %}
+                            <li><a href="{% url 'provider-view' provider.id %}">{{provider.name}}</a></li>
+                            {%endfor%}
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <a href="{% url 'get-provider' %}" class="waves-effect">
+                            <i class="mdi mdi-view-dashboard"></i>
+                            <span>Find a Service Provider</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- Sidebar -->
+        </div>
+    </div>
+    <!-- Left Sidebar End -->
+
+    {% block page %}
+
+    {% endblock %}
+
+
+</div>
+
+
+{% endblock %}
